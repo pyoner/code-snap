@@ -54,3 +54,23 @@ pub fn codesnap(code: &str, language: &str, config: &str) -> ImageData {
         _ => panic!("Expected image data but received different snapshot data"),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_codesnap() {
+        let code = "fn main() { println!(\"Hello, world!\"); }";
+        let language = "rust";
+        let config = r###"{
+            "theme": "candy",
+            "background": "#000000"
+        }"###;
+
+        let result = codesnap(code, language, config);
+
+        assert!(result.width > 0);
+        assert!(result.height > 0);
+        assert!(!result.data.is_empty());
+    }
+}
