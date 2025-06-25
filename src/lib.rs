@@ -21,7 +21,12 @@ impl ImageData {
 }
 
 #[wasm_bindgen]
-pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData {
+pub struct Snapshot {
+    config: CodeSnap,
+}
+
+#[wasm_bindgen]
+pub fn codesnap(code: &str, language: &str, config: Option<Snapshot>) -> ImageData {
     let code_content = Content::Code(
         CodeBuilder::default()
             .content(code)
@@ -31,7 +36,7 @@ pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData
     );
 
     let snap_config = match config {
-        Some(cfg) => CodeSnap::from_config(&cfg).unwrap(),
+        Some(cfg) => cfg.config,
         None => CodeSnap::from_default_theme().unwrap(),
     }
     .content(code_content)
@@ -77,13 +82,15 @@ mod tests {
     fn test_codesnap_with_config() {
         let code = "fn main() { println!(\"Hello, world!\"); }";
         let language = "rust";
-        let config = Some(
-            r###"{
-            "theme": "candy",
-            "background": "#000000"
-        }"###
-                .to_string(),
-        );
+        let config = Some(Snapshot {
+            config: CodeSnap::from_config(
+                r###"{
+                    "theme": "candy",
+                    "background": "#000000"
+                }"###,
+            )
+            .unwrap(),
+        });
 
         let result = codesnap(code, language, config);
 
