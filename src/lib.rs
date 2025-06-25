@@ -21,7 +21,7 @@ impl ImageData {
 }
 
 #[wasm_bindgen]
-pub fn codesnap(code: &str, language: &str, config: &str) -> ImageData {
+pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData {
     let code_content = Content::Code(
         CodeBuilder::default()
             .content(code)
@@ -30,11 +30,18 @@ pub fn codesnap(code: &str, language: &str, config: &str) -> ImageData {
             .unwrap(),
     );
 
-    let snap_config = CodeSnap::from_config(config)
-        .unwrap()
-        .content(code_content)
-        .build()
-        .unwrap();
+    let snap_config = match config {
+        Some(cfg) => CodeSnap::from_config(&cfg)
+            .unwrap()
+            .content(code_content)
+            .build()
+            .unwrap(),
+        None => CodeSnap::from_default_theme()
+            .unwrap()
+            .content(code_content)
+            .build()
+            .unwrap(),
+    };
 
     let image_data = ImageSnapshot::from_config(snap_config)
         .unwrap()
@@ -59,13 +66,29 @@ pub fn codesnap(code: &str, language: &str, config: &str) -> ImageData {
 mod tests {
     use super::*;
     #[test]
-    fn test_codesnap() {
+    fn test_codesnap_without_config() {
         let code = "fn main() { println!(\"Hello, world!\"); }";
         let language = "rust";
-        let config = r###"{
+        let config = None;
+
+        let result = codesnap(code, language, config);
+
+        assert!(result.width > 0);
+        assert!(result.height > 0);
+        assert!(!result.data.is_empty());
+    }
+
+    #[test]
+    fn test_codesnap_with_config() {
+        let code = "fn main() { println!(\"Hello, world!\"); }";
+        let language = "rust";
+        let config = Some(
+            r###"{
             "theme": "candy",
             "background": "#000000"
-        }"###;
+        }"###
+                .to_string(),
+        );
 
         let result = codesnap(code, language, config);
 
