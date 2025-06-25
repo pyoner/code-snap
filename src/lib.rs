@@ -31,17 +31,12 @@ pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData
     );
 
     let snap_config = match config {
-        Some(cfg) => CodeSnap::from_config(&cfg)
-            .unwrap()
-            .content(code_content)
-            .build()
-            .unwrap(),
-        None => CodeSnap::from_default_theme()
-            .unwrap()
-            .content(code_content)
-            .build()
-            .unwrap(),
-    };
+        Some(cfg) => CodeSnap::from_config(&cfg).unwrap(),
+        None => CodeSnap::from_default_theme().unwrap(),
+    }
+    .content(code_content)
+    .build()
+    .unwrap();
 
     let image_data = ImageSnapshot::from_config(snap_config)
         .unwrap()
