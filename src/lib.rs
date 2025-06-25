@@ -21,12 +21,13 @@ impl ImageData {
 }
 
 #[wasm_bindgen]
-pub struct Snapshot {
+pub struct Config {
+    #[wasm_bindgen]
     config: CodeSnap,
 }
 
 #[wasm_bindgen]
-pub fn codesnap(code: &str, language: &str, config: Option<Snapshot>) -> ImageData {
+pub fn codesnap(code: &str, language: &str, config: Option<Config>) -> ImageData {
     let code_content = Content::Code(
         CodeBuilder::default()
             .content(code)
@@ -82,7 +83,7 @@ mod tests {
     fn test_codesnap_with_config() {
         let code = "fn main() { println!(\"Hello, world!\"); }";
         let language = "rust";
-        let config = Some(Snapshot {
+        let config = Some(Config {
             config: CodeSnap::from_config(
                 r###"{
                     "theme": "candy",
