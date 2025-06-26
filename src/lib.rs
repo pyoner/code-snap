@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use codesnap::{
@@ -20,10 +22,10 @@ impl ImageData {
     }
 }
 
-#[wasm_bindgen]
+#[derive(Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Config {
-    #[wasm_bindgen]
-    config: CodeSnap,
+    pub config: CodeSnap,
 }
 
 #[wasm_bindgen]
