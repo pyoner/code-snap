@@ -2,6 +2,9 @@
 name = "code-snap"
 version = "0.1.0"
 authors = ["Askar Yusupov <devex.soft@gmail.com>"]
+description = "A library to create a screenshot from code."
+license = "MIT"
+repository = "https://github.com/pyoner/code-snap"
 edition = "2018"
 
 [lib]
