@@ -1,84 +1,69 @@
-<div align="center">
+# CodeSnap WASM Library
 
-  <h1><code>wasm-pack-template</code></h1>
+This library exposes a WebAssembly interface for generating image snapshots of code snippets with customizable syntax highlighting themes and backgrounds.
 
-  <strong>A template for kick starting a Rust and WebAssembly project using <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a>.</strong>
+## Overview
 
-  <p>
-    <a href="https://travis-ci.org/rustwasm/wasm-pack-template"><img src="https://img.shields.io/travis/rustwasm/wasm-pack-template.svg?style=flat-square" alt="Build Status" /></a>
-  </p>
+The primary function in this crate is `codesnap`, which accepts source code, a language identifier, and an optional JSON configuration string, and returns an image snapshot of the rendered code snippet.
 
-  <h3>
-    <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
-    <span> | </span>
-    <a href="https://discordapp.com/channels/442252698964721669/443151097398296587">Chat</a>
-  </h3>
+## Usage
 
-  <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
-</div>
+### `codesnap` function
 
-## About
-
-[**📚 Read this template tutorial! 📚**][template-docs]
-
-This template is designed for compiling Rust libraries into WebAssembly and
-publishing the resulting package to NPM.
-
-Be sure to check out [other `wasm-pack` tutorials online][tutorials] for other
-templates and usages of `wasm-pack`.
-
-[tutorials]: https://rustwasm.github.io/docs/wasm-pack/tutorials/index.html
-[template-docs]: https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html
-
-## 🚴 Usage
-
-### 🐑 Use `cargo generate` to Clone this Template
-
-[Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)
-
-```
-cargo generate --git https://github.com/rustwasm/wasm-pack-template.git --name my-project
-cd my-project
+```typescript
+/**
+ * Generates a code snapshot image.
+ *
+ * @param code - The source code string.
+ * @param language - The language identifier for syntax highlighting.
+ * @param config - Optional JSON string for configuration options (e.g. theme, background).
+ * @returns An object with `width`, `height`, and `data` properties where `data` is a Uint8Array of PNG bytes.
+ */
+function codesnap(code: string, language: string, config?: string): ImageData;
 ```
 
-### 🛠️ Build with `wasm-pack build`
+- **Parameters:**
+  - `code`: The source code snippet to render.
+  - `language`: The programming language of the code (used for syntax highlighting).
+  - `config`: An optional JSON string for customizing theme and background.
 
+- **Returns:**
+  - `ImageData` struct containing:
+    - `width`: Width of the generated image.
+    - `height`: Height of the generated image.
+    - `data`: A vector of bytes representing the PNG image data.
+
+- **Description:**
+  Generates a syntax-highlighted image snapshot of the provided code string. Uses a default theme if no configuration is provided. The configuration can override theme and background color.
+
+### `ImageData` struct
+
+```typescript
+interface ImageData {
+  width: number;
+  height: number;
+  data: Uint8Array;
+}
 ```
-wasm-pack build
+
+- Represents the generated code snapshot image.
+- The PNG image data can be accessed via the `data` getter method.
+
+## Example
+
+```typescript
+const code = "console.log('Hello, world!');";
+const language = "javascript";
+const config = JSON.stringify({
+  theme: "candy",
+  background: "#000000",
+});
+
+const image: ImageData = codesnap(code, language, config);
+console.log(`Image dimensions: ${image.width}x${image.height}`);
+console.log(`Image data length: ${image.data.length}`);
 ```
-
-### 🔬 Test in Headless Browsers with `wasm-pack test`
-
-```
-wasm-pack test --headless --firefox
-```
-
-### 🎁 Publish to NPM with `wasm-pack publish`
-
-```
-wasm-pack publish
-```
-
-## 🔋 Batteries Included
-
-* [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen) for communicating
-  between WebAssembly and JavaScript.
-* [`console_error_panic_hook`](https://github.com/rustwasm/console_error_panic_hook)
-  for logging panic messages to the developer console.
-* `LICENSE-APACHE` and `LICENSE-MIT`: most Rust projects are licensed this way, so these are included for you
 
 ## License
 
-Licensed under either of
-
-* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
-* MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
-
-at your option.
-
-### Contribution
-
-Unless you explicitly state otherwise, any contribution intentionally
-submitted for inclusion in the work by you, as defined in the Apache-2.0
-license, shall be dual licensed as above, without any additional terms or
-conditions.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
