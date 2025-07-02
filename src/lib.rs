@@ -1,9 +1,7 @@
-use serde::{Deserialize, Serialize};
-use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use codesnap::{
-    config::{CodeBuilder, CodeSnap, Content},
+    config::{CodeBuilder, CodeSnap, Content, SnapshotConfig},
     snapshot::{image_snapshot::ImageSnapshot, snapshot_data::SnapshotData},
 };
 
@@ -22,14 +20,8 @@ impl ImageData {
     }
 }
 
-#[derive(Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Config {
-    pub config: CodeSnap,
-}
-
 #[wasm_bindgen]
-pub fn codesnap(code: &str, language: &str, config: Option<Config>) -> ImageData {
+pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData {
     let code_content = Content::Code(
         CodeBuilder::default()
             .content(code)
@@ -38,10 +30,11 @@ pub fn codesnap(code: &str, language: &str, config: Option<Config>) -> ImageData
             .unwrap(),
     );
 
-    let snap_config = match config {
-        Some(cfg) => cfg.config,
-        None => CodeSnap::from_default_theme().unwrap(),
+    let snap_config: SnapshotConfig = match config {
+        Some(cfg) => CodeSnap::from_config(&cfg),
+        None => CodeSnap::from_default_theme(),
     }
+    .unwrap()
     .content(code_content)
     .build()
     .unwrap();
@@ -85,15 +78,13 @@ mod tests {
     fn test_codesnap_with_config() {
         let code = "fn main() { println!(\"Hello, world!\"); }";
         let language = "rust";
-        let config = Some(Config {
-            config: CodeSnap::from_config(
-                r###"{
-                    "theme": "candy",
-                    "background": "#000000"
-                }"###,
-            )
-            .unwrap(),
-        });
+        let config = Some(
+            r###"{
+                "theme": "candy",
+                "background": "#000000"
+            }"###
+                .to_string(),
+        );
 
         let result = codesnap(code, language, config);
 
