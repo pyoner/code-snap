@@ -1,6 +1,26 @@
-# CodeSnap WASM Library
+# code-snap WASM Library
 
 This library exposes a WebAssembly interface for generating image snapshots of code snippets with customizable syntax highlighting themes and backgrounds.
+
+## Installation
+
+You can install the `code-snap` WASM package via npm:
+
+```bash
+npm install code-snap
+```
+
+Or, if you are using Bun, install with:
+
+```bash
+bun add code-snap
+```
+
+or with yarn:
+
+```bash
+yarn add code-snap
+```
 
 ## Overview
 
@@ -52,6 +72,8 @@ interface ImageData {
 ## Example
 
 ```typescript
+import { codesnap } from "code-snap";
+
 const code = "console.log('Hello, world!');";
 const language = "javascript";
 const config = JSON.stringify({
