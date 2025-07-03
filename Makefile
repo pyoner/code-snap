@@ -21,7 +21,7 @@ copy-ts:
 ts-build: copy-ts
 	tsc -p tsconfig.json --noResolve --outDir $(PKG_DIR)
 
-# Update pkg/package.json files field to include auto-init.* files
+# Update pkg/package.json files field to include index.* files and update main and types fields
 update-package-json:
 	@files=$$(ls $(PKG_DIR)/index.* 2>/dev/null | xargs -n1 basename | jq -R . | jq -s .); \
 	if [ "$$files" = "[]" ]; then \
@@ -30,6 +30,7 @@ update-package-json:
 	fi; \
 	package_json=$(PKG_DIR)/package.json; \
 	tmp_file=$${package_json}.tmp; \
-	jq --argjson files "$$files" '.files as $$oldFiles | .files = ($$oldFiles + $$files | unique)' $$package_json > $$tmp_file && mv $$tmp_file $$package_json && echo "Updated package.json files field with: $$(echo $$files | jq -c .)"
+	jq --argjson files "$$files" '.files as $$oldFiles | .files = ($$oldFiles + $$files | unique) | .main = "index.js" | .types = "index.d.ts"' $$package_json > $$tmp_file && mv $$tmp_file $$package_json && echo "Updated package.json files field and main/types with: $$(echo $$files | jq -c .)"
+
 
 .PHONY: all wasm-build copy-ts ts-build update-package-json
