@@ -22,8 +22,7 @@ copy-ts:
 	cp $(SRC_TS) $(DIST_TS)
 
 # Compile TypeScript source to JavaScript and declaration files in pkg directory
-# Depends on copying the source first
-ts-build: copy-ts
+ts-build:
 	tsc -p tsconfig.json --outDir $(PKG_DIR)
 
 # Update package.json fields: files, main, and types in pkg directory
