@@ -7,7 +7,7 @@ SRC_TS=auto-init.ts
 DIST_TS=$(PKG_DIR)/$(SRC_TS)
 
 # Default target
-all: wasm-build ts-build
+all: wasm-build ts-build update-package-files
 
 # Build wasm with wasm-pack for web target
 wasm-build:
@@ -21,4 +21,15 @@ copy-ts:
 ts-build: copy-ts
 	tsc -p tsconfig.json --noResolve --outDir $(PKG_DIR)
 
-.PHONY: all wasm-build copy-ts ts-build
+# Update pkg/package.json files field to include auto-init.* files
+update-package-files:
+	@files=$$(ls $(PKG_DIR)/auto-init.* 2>/dev/null | xargs -n1 basename | jq -R . | jq -s .); \
+	if [ "$$files" = "[]" ]; then \
+		echo "No auto-init files found to add to package.json files field."; \
+		exit 0; \
+	fi; \
+	package_json=$(PKG_DIR)/package.json; \
+	tmp_file=$${package_json}.tmp; \
+	jq --argjson files "$$files" '.files as $$oldFiles | .files = ($$oldFiles + $$files | unique)' $$package_json > $$tmp_file && mv $$tmp_file $$package_json && echo "Updated package.json files field with: $$(echo $$files | jq -c .)"
+
+.PHONY: all wasm-build copy-ts ts-build update-package-files
