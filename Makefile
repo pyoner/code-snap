@@ -37,4 +37,4 @@ update-package-json:
 	jq --argjson files "$$files" '.files as $$oldFiles | .files = ($$oldFiles + $$files | unique) | .main = "index.js" | .types = "index.d.ts"' $$package_json > $$tmp_file && mv $$tmp_file $$package_json && echo "Updated package.json files field and main/types with: $$(echo $$files | jq -c .)"
 
 
-.PHONY: all wasm-build copy-ts ts-build update-package-json
+.PHONY: all wasm-build copy-ts ts-build update-package-json clean
