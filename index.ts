@@ -12,12 +12,10 @@ export const codesnap = (code: string, language: string, config?: Config) =>
   fn(
     code,
     language,
-    config
-      ? JSON.stringify({
-          theme: "candy",
-          background: "#000000",
-          scale_factor: 1,
-          ...config,
-        } satisfies Config)
-      : null,
+    JSON.stringify({
+      theme: "candy",
+      background: "#000000",
+      scale_factor: 1,
+      ...config,
+    } satisfies Config),
   );
