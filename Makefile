@@ -1,4 +1,4 @@
-# Makefile for building wasm and bundling with bun
+# Makefile for building WebAssembly (wasm)
 
 # Variables
 WASM_TARGET=web
