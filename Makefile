@@ -3,7 +3,7 @@
 # Variables
 WASM_TARGET=web
 PKG_DIR=pkg
-SRC_TS=auto-init.ts
+SRC_TS=index.ts
 DIST_TS=$(PKG_DIR)/$(SRC_TS)
 
 # Default target
@@ -17,15 +17,15 @@ wasm-build:
 copy-ts:
 	cp $(SRC_TS) $(DIST_TS)
 
-# Run tsc to transpile auto-init.ts to JS without bundling wasm using tsconfig
+# Run tsc to transpile index.ts to JS without bundling wasm using tsconfig
 ts-build: copy-ts
 	tsc -p tsconfig.json --noResolve --outDir $(PKG_DIR)
 
 # Update pkg/package.json files field to include auto-init.* files
 update-package-files:
-	@files=$$(ls $(PKG_DIR)/auto-init.* 2>/dev/null | xargs -n1 basename | jq -R . | jq -s .); \
+	@files=$$(ls $(PKG_DIR)/index.* 2>/dev/null | xargs -n1 basename | jq -R . | jq -s .); \
 	if [ "$$files" = "[]" ]; then \
-		echo "No auto-init files found to add to package.json files field."; \
+		echo "No index files found to add to package.json files field."; \
 		exit 0; \
 	fi; \
 	package_json=$(PKG_DIR)/package.json; \
