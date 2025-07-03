@@ -6,6 +6,18 @@ import { codesnap as fn, initSync } from "./code_snap";
 
 initSync({ module: codeSnapWasmModule });
 
-const codesnap = (code: string, language: string, config?: SnapshotConfig) =>
-  fn(code, language, config ? JSON.stringify(config) : null);
-export { codesnap };
+export type Config = Partial<SnapshotConfig>;
+
+export const codesnap = (code: string, language: string, config?: Config) =>
+  fn(
+    code,
+    language,
+    config
+      ? JSON.stringify({
+          theme: "candy",
+          background: "#000000",
+          scale_factor: 1,
+          ...config,
+        } satisfies Config)
+      : null,
+  );
