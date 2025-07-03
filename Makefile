@@ -17,10 +17,6 @@ clean:
 wasm-build:
 	wasm-pack build --target $(WASM_TARGET)
 
-# Copy the TypeScript source file to pkg directory
-copy-ts:
-	cp $(SRC_TS) $(DIST_TS)
-
 # Compile TypeScript source to JavaScript and declaration files in pkg directory
 ts-build:
 	tsc -p tsconfig.json --outDir $(PKG_DIR)
@@ -37,4 +33,4 @@ update-package-json: ts-build
 	tmp_file=$${package_json}.tmp; \
 	jq --argjson files "$$files" '.files as $$oldFiles | .files = ($$oldFiles + $$files | unique) | .main = "index.js" | .types = "index.d.ts"' $$package_json > $$tmp_file && mv $$tmp_file $$package_json && echo "Updated package.json files field and main/types with: $$(echo $$files | jq -c .)"
 
-.PHONY: all wasm-build copy-ts ts-build update-package-json clean
+.PHONY: all wasm-build ts-build update-package-json clean
