@@ -22,7 +22,7 @@ ts-build: copy-ts
 	tsc -p tsconfig.json --noResolve --outDir $(PKG_DIR)
 
 # Update pkg/package.json files field to include auto-init.* files
-update-package-files:
+update-package-json:
 	@files=$$(ls $(PKG_DIR)/index.* 2>/dev/null | xargs -n1 basename | jq -R . | jq -s .); \
 	if [ "$$files" = "[]" ]; then \
 		echo "No index files found to add to package.json files field."; \
@@ -32,4 +32,4 @@ update-package-files:
 	tmp_file=$${package_json}.tmp; \
 	jq --argjson files "$$files" '.files as $$oldFiles | .files = ($$oldFiles + $$files | unique)' $$package_json > $$tmp_file && mv $$tmp_file $$package_json && echo "Updated package.json files field with: $$(echo $$files | jq -c .)"
 
-.PHONY: all wasm-build copy-ts ts-build update-package-files
+.PHONY: all wasm-build copy-ts ts-build update-package-json
