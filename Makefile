@@ -7,7 +7,11 @@ SRC_TS=index.ts
 DIST_TS=$(PKG_DIR)/$(SRC_TS)
 
 # Default target
-all: wasm-build ts-build update-package-files
+all: wasm-build ts-build update-package-json
+
+# Remove pkg directory
+clean:
+	rm -rf $(PKG_DIR)
 
 # Build wasm with wasm-pack for web target
 wasm-build:
