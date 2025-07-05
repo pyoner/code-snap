@@ -91,6 +91,19 @@ const image2 = codesnap(code, "javascript", {
 
 console.log(`Image2 dimensions: ${image2.width}x${image2.height}`);
 console.log(`Image2 data length: ${image2.data.length}`);
+
+// Example: Convert ImageData to PNG Blob (for usage in browser)
+const blob = new Blob([image2.data], { type: "image/png" });
+console.log("Blob created:", blob);
+
+// Optional: Create an object URL from the Blob to use as an image source
+const imageUrl = URL.createObjectURL(blob);
+console.log("Image URL:", imageUrl);
+
+// You can then create an img element and set its source to the URL like:
+//   const img = document.createElement('img');
+//   img.src = imageUrl;
+//   document.body.appendChild(img);
 ```
 
 ## License
