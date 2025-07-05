@@ -1,4 +1,4 @@
-# @pyoner/codesnap WASM Library
+# Take clear and colorful snapshots of your code
 
 This library exposes a WebAssembly interface for generating image snapshots of code snippets with customizable syntax highlighting themes and backgrounds.
 
