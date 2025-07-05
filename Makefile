@@ -5,6 +5,8 @@ WASM_TARGET=web
 PKG_DIR=pkg
 SRC_TS=index.ts
 DIST_TS=$(PKG_DIR)/$(SRC_TS)
+# Add scope variable for wasm-pack build command
+SCOPE = pyoner
 
 # Default target builds wasm, TypeScript, and updates package.json metadata.
 all: build-wasm update-package-json
@@ -15,7 +17,7 @@ clean:
 
 # Build wasm binaries for web target using wasm-pack
 build-wasm:
-	wasm-pack build --target $(WASM_TARGET)
+	wasm-pack build --target $(WASM_TARGET) --scope $(SCOPE)
 
 # Compile TypeScript source to JavaScript and declaration files in pkg directory
 build-ts:
