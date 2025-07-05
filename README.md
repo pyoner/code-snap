@@ -35,11 +35,11 @@ The primary function in this crate is `codesnap`, which accepts source code, a l
  * Generates a code snapshot image.
  *
  * @param code - The source code string.
- * @param language - Optional language identifier for syntax highlighting.
+ * @param language - The language identifier for syntax highlighting.
  * @param config - Optional configuration object for options (e.g. theme, background).
  * @returns An object with `width`, `height`, and `data` properties where `data` is a Uint8Array of PNG bytes.
  */
-function codesnap(code: string, language?: string, config?: object): ImageData;
+function codesnap(code: string, language: string, config?: object): ImageData;
 ```
 
 - **Parameters:**
@@ -76,8 +76,8 @@ import { codesnap } from "code-snap";
 
 const code = "console.log('Hello, world!');";
 
-// Example with minimal parameters
-const image1 = codesnap(code);
+// Example with required language parameter and no config
+const image1 = codesnap(code, "javascript");
 
 console.log(`Image1 dimensions: ${image1.width}x${image1.height}`);
 console.log(`Image1 data length: ${image1.data.length}`);
