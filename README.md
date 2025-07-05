@@ -24,7 +24,7 @@ yarn add code-snap
 
 ## Overview
 
-The primary function in this crate is `codesnap`, which accepts source code, a language identifier, and an optional JSON configuration string, and returns an image snapshot of the rendered code snippet.
+The primary function in this package is `codesnap`, which accepts source code, a language identifier, and an optional configuration object, and returns an image snapshot of the rendered code snippet.
 
 ## Usage
 
@@ -44,7 +44,7 @@ function codesnap(code: string, language: string, config?: object): ImageData;
 
 - **Parameters:**
   - `code`: The source code snippet to render.
-  - `language` (optional): The programming language of the code (used for syntax highlighting).
+  - `language`: The programming language of the code (used for syntax highlighting).
   - `config` (optional): Configuration object for customizing theme, background, scale factor, etc.
 
 - **Returns:**
