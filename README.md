@@ -75,13 +75,9 @@ interface ImageData {
 import { codesnap } from "code-snap";
 
 const code = "console.log('Hello, world!');";
-const language = "javascript";
-const config = JSON.stringify({
-  theme: "candy",
-  background: "#000000",
-});
 
-const image: ImageData = codesnap(code, language, config);
+const image = codesnap(code);
+
 console.log(`Image dimensions: ${image.width}x${image.height}`);
 console.log(`Image data length: ${image.data.length}`);
 ```
