@@ -33,4 +33,7 @@ update-package-json: build-ts
 	tmp_file=$${package_json}.tmp; \
 	jq --argjson files "$$files" '.files as $$oldFiles | .files = ($$oldFiles + $$files | unique) | .main = "index.js" | .types = "index.d.ts"' $$package_json > $$tmp_file && mv $$tmp_file $$package_json && echo "Updated package.json files field and main/types with: $$(echo $$files | jq -c .)"
 
-.PHONY: all build-wasm build-ts update-package-json clean
+publish:
+	cd pkg && npm publish --access=public
+
+.PHONY: all build-wasm build-ts update-package-json clean publish
