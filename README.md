@@ -35,17 +35,17 @@ The primary function in this crate is `codesnap`, which accepts source code, a l
  * Generates a code snapshot image.
  *
  * @param code - The source code string.
- * @param language - The language identifier for syntax highlighting.
- * @param config - Optional JSON string for configuration options (e.g. theme, background).
+ * @param language - Optional language identifier for syntax highlighting.
+ * @param config - Optional configuration object for options (e.g. theme, background).
  * @returns An object with `width`, `height`, and `data` properties where `data` is a Uint8Array of PNG bytes.
  */
-function codesnap(code: string, language: string, config?: string): ImageData;
+function codesnap(code: string, language?: string, config?: object): ImageData;
 ```
 
 - **Parameters:**
   - `code`: The source code snippet to render.
-  - `language`: The programming language of the code (used for syntax highlighting).
-  - `config`: An optional JSON string for customizing theme and background.
+  - `language` (optional): The programming language of the code (used for syntax highlighting).
+  - `config` (optional): Configuration object for customizing theme, background, scale factor, etc.
 
 - **Returns:**
   - `ImageData` struct containing:
@@ -54,7 +54,7 @@ function codesnap(code: string, language: string, config?: string): ImageData;
     - `data`: A vector of bytes representing the PNG image data.
 
 - **Description:**
-  Generates a syntax-highlighted image snapshot of the provided code string. Uses a default theme if no configuration is provided. The configuration can override theme and background color.
+  Generates a syntax-highlighted image snapshot of the provided code string. Uses a default theme and background if no configuration is provided. The configuration can override theme, background color, and other options.
 
 ### `ImageData` struct
 
@@ -76,10 +76,21 @@ import { codesnap } from "code-snap";
 
 const code = "console.log('Hello, world!');";
 
-const image = codesnap(code);
+// Example with minimal parameters
+const image1 = codesnap(code);
 
-console.log(`Image dimensions: ${image.width}x${image.height}`);
-console.log(`Image data length: ${image.data.length}`);
+console.log(`Image1 dimensions: ${image1.width}x${image1.height}`);
+console.log(`Image1 data length: ${image1.data.length}`);
+
+// Example with language and config
+const image2 = codesnap(code, "javascript", {
+  theme: "candy",
+  background: "#000000",
+  scale_factor: 1,
+});
+
+console.log(`Image2 dimensions: ${image2.width}x${image2.height}`);
+console.log(`Image2 data length: ${image2.data.length}`);
 ```
 
 ## License
