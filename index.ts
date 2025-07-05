@@ -8,7 +8,17 @@ initSync({ module: codeSnapWasmModule });
 
 export type Config = Partial<SnapshotConfig>;
 
-export const codesnap = (code: string, language: string, config?: Config) =>
+export type ImageData = {
+  width: number;
+  height: number;
+  readonly data: Uint8Array;
+};
+
+export const codesnap = (
+  code: string,
+  language: string,
+  config?: Config,
+): ImageData =>
   fn(
     code,
     language,
