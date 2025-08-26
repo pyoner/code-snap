@@ -1,3 +1,4 @@
+use js_sys::Uint8Array;
 use wasm_bindgen::prelude::*;
 
 use codesnap::{
@@ -9,14 +10,28 @@ use codesnap::{
 pub struct ImageData {
     pub width: usize,
     pub height: usize,
-    data: Vec<u8>,
+    ptr: usize,
+    len: usize,
+    cap: usize,
 }
 
 #[wasm_bindgen]
 impl ImageData {
     #[wasm_bindgen(getter)]
-    pub fn data(&self) -> Vec<u8> {
-        self.data.clone()
+    pub fn data(&self) -> Uint8Array {
+        unsafe {
+            let d = Vec::from_raw_parts(self.ptr as *mut u8, self.len, self.cap);
+            let view = Uint8Array::view(&d);
+            std::mem::forget(d); // <-- leak it so view remains valid
+            view
+        }
+    }
+
+    pub fn free(&self) {
+        unsafe {
+            let _ = Vec::from_raw_parts(self.ptr as *mut u8, self.len, self.cap);
+            // Vec drops here, freeing the memory
+        }
     }
 }
 
@@ -49,11 +64,21 @@ pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData
             data,
             width,
             height,
-        } => ImageData {
-            data,
-            width,
-            height,
-        },
+        } => {
+            // Capture length information before moving `data` into ImageData
+            let (ptr, len, cap) = {
+                let d = &data;
+                (d.as_ptr() as usize, d.len(), d.capacity())
+            };
+            std::mem::forget(data);
+            ImageData {
+                ptr,
+                len,
+                cap,
+                width,
+                height,
+            }
+        }
         _ => panic!("Expected image data but received different snapshot data"),
     }
 }
@@ -61,7 +86,10 @@ pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData
 #[cfg(test)]
 mod tests {
     use super::*;
+    use wasm_bindgen_test::wasm_bindgen_test;
+
     #[test]
+    #[wasm_bindgen_test]
     fn test_codesnap_without_config() {
         let code = "fn main() { println!(\"Hello, world!\"); }";
         let language = "rust";
@@ -71,10 +99,13 @@ mod tests {
 
         assert!(result.width > 0);
         assert!(result.height > 0);
-        assert!(!result.data.is_empty());
+
+        result.data();
+        result.free();
     }
 
     #[test]
+    #[wasm_bindgen_test]
     fn test_codesnap_with_config() {
         let code = "fn main() { println!(\"Hello, world!\"); }";
         let language = "rust";
@@ -90,6 +121,8 @@ mod tests {
 
         assert!(result.width > 0);
         assert!(result.height > 0);
-        assert!(!result.data.is_empty());
+
+        result.data();
+        result.free();
     }
 }
