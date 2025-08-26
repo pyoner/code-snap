@@ -15,7 +15,7 @@ codeInput.value = `function greet(name) {
   console.log(\`Hello, \${name}!\`);
 }`;
 languageInput.value = "javascript";
-themeInput.value = "dracula";
+themeInput.value = "candy";
 backgroundInput.value = "#282A36";
 scaleFactorInput.value = "2";
 

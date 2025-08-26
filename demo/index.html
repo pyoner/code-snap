@@ -1,134 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Snap Demo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #0056b3;
-            margin-bottom: 30px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .input-group textarea,
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-        textarea {
-            min-height: 150px;
-            font-family: monospace;
-        }
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .output-section {
-            margin-top: 30px;
-            text-align: center;
-        }
-        #image-output {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            margin-top: 20px;
-            border-radius: 4px;
-            display: none; /* Hidden by default */
-        }
-        #download-link {
-            display: none; /* Hidden by default */
-            margin-top: 15px;
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-        #download-link:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Code Snap Demo</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Code Snap Demo</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f4f4f4;
+                color: #333;
+            }
+            .container {
+                max-width: 900px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                text-align: center;
+                color: #0056b3;
+                margin-bottom: 30px;
+            }
+            .input-group {
+                margin-bottom: 15px;
+            }
+            .input-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+            .input-group textarea,
+            .input-group input,
+            .input-group select {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 1rem;
+            }
+            textarea {
+                min-height: 150px;
+                font-family: monospace;
+            }
+            button {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 1.1rem;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            .output-section {
+                margin-top: 30px;
+                text-align: center;
+            }
+            #image-output {
+                max-width: 100%;
+                height: auto;
+                border: 1px solid #ddd;
+                margin-top: 20px;
+                border-radius: 4px;
+                display: none; /* Hidden by default */
+            }
+            #download-link {
+                display: none; /* Hidden by default */
+                margin-top: 15px;
+                padding: 10px 15px;
+                background-color: #28a745;
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+            }
+            #download-link:hover {
+                background-color: #218838;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Code Snap Demo</h1>
 
-        <div class="input-group">
-            <label for="code-input">Code Snippet:</label>
-            <textarea id="code-input" rows="10"></textarea>
+            <div class="input-group">
+                <label for="code-input">Code Snippet:</label>
+                <textarea id="code-input" rows="10"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="language-input">Language:</label>
+                <input type="text" id="language-input" value="javascript" />
+            </div>
+
+            <div class="input-group">
+                <label for="theme-input">Theme:</label>
+                <input type="text" id="theme-input" value="candy" disabled />
+                <small
+                    >Common themes: `dracula`, `vscode`, `nord`, `github-light`,
+                    `solarized-dark`</small
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="background-input">Background Color:</label>
+                <input type="text" id="background-input" value="#282A36" />
+                <small>Example: `#282A36`, `rgba(0,0,0,0.8)`</small>
+            </div>
+
+            <div class="input-group">
+                <label for="scale-factor-input">Scale Factor:</label>
+                <input
+                    type="number"
+                    id="scale-factor-input"
+                    value="2"
+                    min="0.5"
+                    step="0.5"
+                />
+                <small
+                    >Higher values result in larger, higher-resolution
+                    images.</small
+                >
+            </div>
+
+            <button id="generate-button">Generate Snapshot</button>
+
+            <div class="output-section">
+                <h2>Generated Image</h2>
+                <img id="image-output" alt="Code Snapshot" />
+                <a id="download-link" href="#" download="codesnap.png"
+                    >Download Image</a
+                >
+            </div>
         </div>
 
-        <div class="input-group">
-            <label for="language-input">Language:</label>
-            <input type="text" id="language-input" value="javascript">
-        </div>
-
-        <div class="input-group">
-            <label for="theme-input">Theme:</label>
-            <input type="text" id="theme-input" value="dracula">
-            <small>Common themes: `dracula`, `vscode`, `nord`, `github-light`, `solarized-dark`</small>
-        </div>
-
-        <div class="input-group">
-            <label for="background-input">Background Color:</label>
-            <input type="text" id="background-input" value="#282A36">
-            <small>Example: `#282A36`, `rgba(0,0,0,0.8)`</small>
-        </div>
-
-        <div class="input-group">
-            <label for="scale-factor-input">Scale Factor:</label>
-            <input type="number" id="scale-factor-input" value="2" min="0.5" step="0.5">
-            <small>Higher values result in larger, higher-resolution images.</small>
-        </div>
-
-        <button id="generate-button">Generate Snapshot</button>
-
-        <div class="output-section">
-            <h2>Generated Image</h2>
-            <img id="image-output" alt="Code Snapshot">
-            <a id="download-link" href="#" download="codesnap.png">Download Image</a>
-        </div>
-    </div>
-
-    <script type="module" src="./src/index.js"></script>
-</body>
+        <script type="module" src="./src/index.js"></script>
+    </body>
 </html>

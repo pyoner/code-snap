@@ -1,10 +1,9 @@
 import type { SnapshotConfig } from "./types";
 // @ts-ignore
-import codeSnapWasmModule from "./code_snap_bg.wasm";
-// @ts-ignore
-import { codesnap as fn, initSync } from "./codesnap";
+import initWasm, { codesnap as fn } from "./code_snap";
 
-initSync({ module: codeSnapWasmModule });
+const wasm = await initWasm();
+console.log("initWasm", wasm);
 
 export type Config = Partial<SnapshotConfig>;
 
