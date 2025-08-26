@@ -10,28 +10,14 @@ use codesnap::{
 pub struct ImageData {
     pub width: usize,
     pub height: usize,
-    ptr: usize,
-    len: usize,
-    cap: usize,
+    data: Vec<u8>,
 }
 
 #[wasm_bindgen]
 impl ImageData {
     #[wasm_bindgen(getter)]
     pub fn data(&self) -> Uint8Array {
-        unsafe {
-            let d = Vec::from_raw_parts(self.ptr as *mut u8, self.len, self.cap);
-            let view = Uint8Array::view(&d);
-            std::mem::forget(d); // <-- leak it so view remains valid
-            view
-        }
-    }
-
-    pub fn free(&self) {
-        unsafe {
-            let _ = Vec::from_raw_parts(self.ptr as *mut u8, self.len, self.cap);
-            // Vec drops here, freeing the memory
-        }
+        unsafe { Uint8Array::view(&self.data) }
     }
 }
 
@@ -64,21 +50,11 @@ pub fn codesnap(code: &str, language: &str, config: Option<String>) -> ImageData
             data,
             width,
             height,
-        } => {
-            // Capture length information before moving `data` into ImageData
-            let (ptr, len, cap) = {
-                let d = &data;
-                (d.as_ptr() as usize, d.len(), d.capacity())
-            };
-            std::mem::forget(data);
-            ImageData {
-                ptr,
-                len,
-                cap,
-                width,
-                height,
-            }
-        }
+        } => ImageData {
+            width,
+            height,
+            data,
+        },
         _ => panic!("Expected image data but received different snapshot data"),
     }
 }
@@ -99,9 +75,7 @@ mod tests {
 
         assert!(result.width > 0);
         assert!(result.height > 0);
-
-        result.data();
-        result.free();
+        assert!(result.data().length() > 0);
     }
 
     #[test]
@@ -121,8 +95,6 @@ mod tests {
 
         assert!(result.width > 0);
         assert!(result.height > 0);
-
-        result.data();
-        result.free();
+        assert!(result.data().length() > 0);
     }
 }
