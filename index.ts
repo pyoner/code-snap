@@ -1,6 +1,6 @@
 import type { SnapshotConfig } from "./types";
 // @ts-ignore
-import codeSnapWasmModule from "./codesnap_bg.wasm";
+import codeSnapWasmModule from "./code_snap_bg.wasm";
 // @ts-ignore
 import { codesnap as fn, initSync } from "./codesnap";
 
