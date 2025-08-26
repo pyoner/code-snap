@@ -12,6 +12,7 @@ export type ImageData = {
   width: number;
   height: number;
   readonly data: Uint8Array;
+  free: () => void;
 };
 
 export const codesnap = (
